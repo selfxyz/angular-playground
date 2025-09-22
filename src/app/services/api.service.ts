@@ -21,6 +21,6 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   saveOptions(request: SaveOptionsRequest): Observable<SaveOptionsResponse> {
-    return this.http.post<SaveOptionsResponse>('https://8e252df08be5.ngrok-free.app/api/saveOptions', request);
+    return this.http.post<SaveOptionsResponse>('https://cc10778f114e.ngrok-free.app/api/saveOptions', request);
   }
 }
