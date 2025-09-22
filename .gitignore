@@ -1,0 +1,8 @@
+node_modules
+dist
+.env
+.yarn
+.angular
+
+.pnp.cjs
+.pnp.loader.mjs

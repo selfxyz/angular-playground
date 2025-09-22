@@ -1,0 +1,170 @@
+<div class="app" [attr.suppressHydrationWarning]="true">
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="nav-left">
+                <div class="logo-container">
+                    <img src="/self.svg" alt="Self Logo" class="logo" width="96" height="36">
+                </div>
+            </div>
+            <div class="nav-right">
+                <a href="https://github.com/selfxyz/self" target="_blank" rel="noopener noreferrer"
+                    class="github-button">
+                    <span class="github-text">Star on Github</span>
+                    <span class="github-text-mobile">Star</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                        </path>
+                    </svg>
+                </a>
+                <a class="self-link" href="https://self.xyz" target="_blank" rel="noopener noreferrer">
+                    Go to self.xyz →
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+     
+    <div class="main-content">
+        <div class="content-wrapper">
+            <!-- QR Code Section -->
+            <div class="qr-section">
+                <div class="qr-container" *ngIf="selfApp; else loadingQR">
+                    <lib-self-qrcode [selfApp]="selfApp" [successFn]="onSuccess" 
+                        [errorFn]="onError" [darkMode]="false" [size]="300">
+                    </lib-self-qrcode>
+                </div>
+                <ng-template #loadingQR>
+                    <p>Loading QR Code...</p>
+                </ng-template>
+                <p class="user-id" *ngIf="userId">
+                    User ID: {{ userId.substring(0, 8) }}...
+                </p>
+            </div>
+
+            <!-- Options Section -->
+            <div class="options-section">
+                <h2 class="options-title">Verification Options</h2>
+
+                <div class="options-content">
+                    <!-- Personal Information -->
+                    <div class="option-group">
+                        <h3 class="group-title">Personal Information</h3>
+                        <div class="checkbox-grid">
+                            <div class="checkbox-column">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" [checked]="disclosures.issuing_state"
+                                        (change)="onCheckboxChange('issuing_state')" class="checkbox">
+                                    <span>Disclose Issuing State</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" [checked]="disclosures.name"
+                                        (change)="onCheckboxChange('name')" class="checkbox">
+                                    <span>Disclose Name</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" [checked]="disclosures.nationality"
+                                        (change)="onCheckboxChange('nationality')" class="checkbox">
+                                    <span>Disclose Nationality</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" [checked]="disclosures.date_of_birth"
+                                        (change)="onCheckboxChange('date_of_birth')" class="checkbox">
+                                    <span>Disclose Date of Birth</span>
+                                </label>
+                            </div>
+                            <div class="checkbox-column">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" [checked]="disclosures.passport_number"
+                                        (change)="onCheckboxChange('passport_number')" class="checkbox">
+                                    <span>Disclose Passport Number</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" [checked]="disclosures.gender"
+                                        (change)="onCheckboxChange('gender')" class="checkbox">
+                                    <span>Disclose Gender</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" [checked]="disclosures.expiry_date"
+                                        (change)="onCheckboxChange('expiry_date')" class="checkbox">
+                                    <span>Disclose Expiry Date</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Verification Rules -->
+                    <div class="option-group">
+                        <h3 class="group-title">Verification Rules</h3>
+                        <div class="rules-content">
+                            <div class="age-slider">
+                                <label class="age-label">
+                                    Minimum Age: {{ disclosures.minimumAge || 'None' }}
+                                </label>
+                                <input type="range" min="0" max="99" [value]="disclosures.minimumAge"
+                                    (input)="onAgeChange($event)" class="slider">
+                                <div class="age-help">
+                                    Set to 0 to disable age requirement
+                                </div>
+                            </div>
+
+                            <div class="ofac-checkbox">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" [checked]="disclosures.ofac"
+                                        (change)="onCheckboxChange('ofac')" class="checkbox">
+                                    <span>Enable OFAC Check</span>
+                                </label>
+                            </div>
+
+                            <div class="country-config">
+                                <button (click)="showCountryModal = true" class="country-button">
+                                    Configure Excluded Countries
+                                </button>
+                                <div class="country-info">
+                                    {{ disclosures.excludedCountries && disclosures.excludedCountries.length > 0
+                                    ? disclosures.excludedCountries.length + ' countries excluded'
+                                    : 'No countries excluded' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Country Selection Modal -->
+    <div class="modal-overlay" *ngIf="showCountryModal">
+        <div class="modal-content">
+            <h3 class="modal-title">Select Countries to Exclude</h3>
+
+            <div class="error-message" *ngIf="countrySelectionError">
+                {{ countrySelectionError }}
+            </div>
+
+            <div class="search-container">
+                <input type="text" placeholder="Search countries..." [(ngModel)]="searchQuery" class="search-input">
+            </div>
+
+            <div class="countries-grid">
+                <label *ngFor="let country of filteredCountries; trackBy: trackByCountry" class="country-label">
+                    <input type="checkbox" [checked]="isCountrySelected(country[0])"
+                        (change)="onCountryToggle(country[0])" class="checkbox">
+                    <span class="country-name">{{ country[1] }}</span>
+                </label>
+            </div>
+
+            <div class="modal-actions">
+                <button (click)="showCountryModal = false" class="cancel-button">
+                    Cancel
+                </button>
+                <button (click)="saveCountrySelection()" class="apply-button">
+                    Apply
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
