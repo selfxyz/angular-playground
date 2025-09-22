@@ -69,7 +69,12 @@ func GoSaveOptions(w http.ResponseWriter, r *http.Request) {
 
 	ctx := context.Background()
 
-	// Use the shared ConfigStoreInstance from verify.go
+	// Store the SelfAppDisclosureConfig in the configs map for GetDisclosureConfig
+	if ConfigStoreInstance == nil {
+		ConfigStoreInstance = self.NewInMemoryConfigStore(func(ctx context.Context, userIdentifier string, userDefinedData string) (string, error) {
+			return userIdentifier, nil
+		})
+	}
 	_, err = ConfigStoreInstance.SetConfig(ctx, req.UserID, frontendOptions)
 
 	if err != nil {

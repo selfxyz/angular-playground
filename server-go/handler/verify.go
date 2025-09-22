@@ -26,12 +26,6 @@ type VerifyResponse struct {
 // Exported so save-option.go can use the same instance
 var ConfigStoreInstance *self.InMemoryConfigStore
 
-func init() {
-	// Initialize with a simple action ID function that returns the user identifier
-	ConfigStoreInstance = self.NewInMemoryConfigStore(func(ctx context.Context, userIdentifier string, userDefinedData string) (string, error) {
-		return userIdentifier, nil
-	})
-}
 
 // VerifyHandler handles the verification endpoint
 func VerifyHandler(w http.ResponseWriter, r *http.Request) {
@@ -39,6 +33,12 @@ func VerifyHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	if ConfigStoreInstance == nil {
+		ConfigStoreInstance = self.NewInMemoryConfigStore(func(ctx context.Context, userIdentifier string, userDefinedData string) (string, error) {
+			return userIdentifier, nil
+		})
+	}
 
 	if r.Method == "OPTIONS" {
 		w.WriteHeader(http.StatusOK)
