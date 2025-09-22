@@ -20,6 +20,13 @@ Runs on `http://localhost:8080`
 ## Screenshots
 
 ### Configuration Interface
+
+Uses **InMemoryConfigStore** - a simple in-memory key-value store with these functions:
+- `SetConfig()` - Stores verification config for a user ID
+- `GetConfig()` - Retrieves stored config by user ID  
+- `GetActionId()` - Returns user identifier for verification actions
+
+
 ![Configuration Interface](images/config_interface.png)
 *Frontend interface showing how users can modify verification configuration settings*
 
