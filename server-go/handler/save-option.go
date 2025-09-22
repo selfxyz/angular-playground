@@ -7,8 +7,6 @@ import (
 	"log"
 	"net/http"
 
-	"angular-playground-backend/config"
-
 	self "github.com/selfxyz/self/sdk/sdk-go"
 )
 
@@ -71,10 +69,7 @@ func GoSaveOptions(w http.ResponseWriter, r *http.Request) {
 
 	ctx := context.Background()
 
-	// Store the SelfAppDisclosureConfig in the configs map for GetDisclosureConfig
-	if ConfigStoreInstance == nil {
-		ConfigStoreInstance = config.NewInMemoryConfigStore()
-	}
+	// Use the shared ConfigStoreInstance from verify.go
 	_, err = ConfigStoreInstance.SetConfig(ctx, req.UserID, frontendOptions)
 
 	if err != nil {

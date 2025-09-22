@@ -6,8 +6,6 @@ import (
 	"log"
 	"net/http"
 
-	"angular-playground-backend/config"
-
 	self "github.com/selfxyz/self/sdk/sdk-go"
 )
 
@@ -26,7 +24,14 @@ type VerifyResponse struct {
 
 // Global config store instance - similar to TypeScript version
 // Exported so save-option.go can use the same instance
-var ConfigStoreInstance *config.InMemoryConfigStore
+var ConfigStoreInstance *self.InMemoryConfigStore
+
+func init() {
+	// Initialize with a simple action ID function that returns the user identifier
+	ConfigStoreInstance = self.NewInMemoryConfigStore(func(ctx context.Context, userIdentifier string, userDefinedData string) (string, error) {
+		return userIdentifier, nil
+	})
+}
 
 // VerifyHandler handles the verification endpoint
 func VerifyHandler(w http.ResponseWriter, r *http.Request) {
@@ -49,9 +54,6 @@ func VerifyHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
-	if ConfigStoreInstance == nil {
-		ConfigStoreInstance = config.NewInMemoryConfigStore()
-	}
 
 	var req VerifyRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -61,17 +63,6 @@ func VerifyHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx := context.Background()
-	// Check if global config store is available
-	if ConfigStoreInstance == nil {
-		log.Printf("Config store not initialized")
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(VerifyResponse{
-			Status: "error",
-			Result: false,
-			Reason: "Internal server error",
-		})
-		return
-	}
 
 	// For now, we'll create the verification config after we know the user identifier
 	// The SDK will call GetConfig() during verification with the user's action ID
