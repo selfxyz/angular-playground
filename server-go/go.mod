@@ -4,7 +4,7 @@ go 1.23.0
 
 toolchain go1.24.6
 
-require github.com/selfxyz/self/sdk/sdk-go v0.0.0-20250922072456-ca7292b0069b
+require github.com/selfxyz/self/sdk/sdk-go v0.0.0-20251001100113-9131cd3649f0
 
 require (
 	github.com/Microsoft/go-winio v0.6.2 // indirect
