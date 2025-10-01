@@ -141,7 +141,7 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
     const app = new SelfAppBuilder({
       appName: "Self Playground",
       scope: "self-playground",
-      endpoint: "https://cc10778f114e.ngrok-free.app/api/verify",
+      endpoint: "https://ceaf1286c8f7.ngrok-free.app/api/verify",
       endpointType: "staging_https",
       logoBase64: "https://i.imgur.com/Rz8B3s7.png",
       userId: this.userId,

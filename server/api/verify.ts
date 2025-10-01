@@ -59,7 +59,7 @@ export async function verifyHandler(
 
     const selfBackendVerifier = new SelfBackendVerifier(
       "self-playground",
-      "https://cc10778f114e.ngrok-free.app/api/verify",
+      "https://ceaf1286c8f7.ngrok-free.app/api/verify",
       true,
       AllIds,
       configStore,
